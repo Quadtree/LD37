@@ -127,6 +127,11 @@ void ALD37Character::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ALD37Character::OnResetVR);
 
+	PlayerInputComponent->BindAction("SelectWeapon0", IE_Pressed, this, &ALD37Character::SelectWeapon0);
+	PlayerInputComponent->BindAction("SelectWeapon1", IE_Pressed, this, &ALD37Character::SelectWeapon1);
+	PlayerInputComponent->BindAction("SelectWeapon2", IE_Pressed, this, &ALD37Character::SelectWeapon2);
+	PlayerInputComponent->BindAction("SelectWeapon3", IE_Pressed, this, &ALD37Character::SelectWeapon3);
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &ALD37Character::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ALD37Character::MoveRight);
 
@@ -329,4 +334,31 @@ void ALD37Character::Tick(float deltaTime)
 	if (IsFiring) OnFire();
 
 	ShotCharge += deltaTime;
+}
+
+void ALD37Character::SelectWeapon0()
+{
+	SelectWeapon(0);
+}
+
+void ALD37Character::SelectWeapon1()
+{
+	SelectWeapon(1);
+}
+
+void ALD37Character::SelectWeapon2()
+{
+	SelectWeapon(2);
+}
+
+void ALD37Character::SelectWeapon3()
+{
+	SelectWeapon(3);
+}
+
+void ALD37Character::SelectWeapon(int32 num)
+{
+	CurrentWeapon = FMath::Clamp(num, 0, WeaponDescriptions.Num() - 1);
+
+	// @todo: Change model
 }

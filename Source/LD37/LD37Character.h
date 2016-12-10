@@ -164,5 +164,11 @@ public:
 	TArray<FWeaponDescription> WeaponDescriptions;
 
 	void Tick(float deltaTime);
+
+	void SelectWeapon0();
+	void SelectWeapon1();
+	void SelectWeapon2();
+	void SelectWeapon3();
+	void SelectWeapon(int32 num);
 };
 
