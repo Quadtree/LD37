@@ -24,6 +24,7 @@ void AToybox::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SpawnCharge = 1000;
 }
 
 // Called every frame
@@ -33,7 +34,7 @@ void AToybox::Tick( float DeltaTime )
 
 	SpawnCharge += DeltaTime;
 
-	if (SpawnCharge > 0.5f)
+	if (SpawnCharge > 3.f)
 	{
 		int32 gruntsUp = 0;
 		int32 officersUp = 0;
@@ -97,7 +98,7 @@ ALD37Character* AToybox::SpawnToy(TSubclassOf<class ALD37Character> type)
 	{
 		officer->SpawnDefaultController();
 		officer->LaunchCharacter(launchVel + FMath::RandPointInBox(FBox(FVector(-100, -100, -100), FVector(100, 100, 100))), true, true);
-		officer->Team = Team;
+		officer->SetTeam(Team);
 	}
 
 	return officer;

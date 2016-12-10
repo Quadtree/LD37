@@ -172,5 +172,7 @@ public:
 	void SelectWeapon2();
 	void SelectWeapon3();
 	void SelectWeapon(int32 num);
+
+	void SetTeam(int32 team);
 };
 

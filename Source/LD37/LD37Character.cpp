@@ -120,6 +120,8 @@ void ALD37Character::BeginPlay()
 			if (!AmmoCounts.Contains(WeaponDescriptions[i].AmmoType)) AmmoCounts.Add(WeaponDescriptions[i].AmmoType, 0);
 		}
 	}
+
+	//UE_LOG(LogTemp, Display, TEXT("Team=%s"), *FString::FromInt(Team));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -171,11 +173,13 @@ void ALD37Character::OnFire()
 		UWorld* const World = GetWorld();
 		if (World != NULL)
 		{
+			AActor* newPrj = nullptr;
+
 			if (bUsingMotionControllers)
 			{
 				const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
 				const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
-				World->SpawnActor<ALD37Projectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+				newPrj = World->SpawnActor<ALD37Projectile>(ProjectileClass, SpawnLocation, SpawnRotation);
 			}
 			else
 			{
@@ -188,7 +192,18 @@ void ALD37Character::OnFire()
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 				// spawn the projectile at the muzzle
-				World->SpawnActor<ALD37Projectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				newPrj = World->SpawnActor<ALD37Projectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			}
+
+			if (newPrj && WeaponDescriptions[CurrentWeapon].InheritMaterial)
+			{
+				for (auto& a : newPrj->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
+				{
+					if (auto a2 = Cast<UPrimitiveComponent>(a))
+					{
+						a2->SetMaterial(0, TeamMaterials[Team]);
+					}
+				}
 			}
 
 			ShotsFired++;
@@ -376,4 +391,17 @@ void ALD37Character::SelectWeapon(int32 num)
 	CurrentWeapon = FMath::Clamp(num, 0, WeaponDescriptions.Num() - 1);
 
 	// @todo: Change model
+}
+
+void ALD37Character::SetTeam(int32 team)
+{
+	Team = team;
+
+	for (auto& a : GetComponentsByClass(UPrimitiveComponent::StaticClass()))
+	{
+		if (auto a2 = Cast<UPrimitiveComponent>(a))
+		{
+			a2->SetMaterial(0, TeamMaterials[Team]);
+		}
+	}
 }
