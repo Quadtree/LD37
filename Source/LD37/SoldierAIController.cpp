@@ -66,10 +66,10 @@ void ASoldierAIController::Tick(float deltaTime)
 
 		if (StuckTime > 5)
 		{
-			//chr->Destroy();
+			chr->TakeDamage(1000, FDamageEvent(), nullptr, nullptr);
 		}
 
-		DrawDebugString(GetWorld(), chr->GetActorLocation(), *FString::SanitizeFloat(StuckTime), nullptr, FColor::Red, deltaTime, true);
+		//DrawDebugString(GetWorld(), chr->GetActorLocation(), *FString::SanitizeFloat(StuckTime), nullptr, FColor::Red, deltaTime, true);
 
 		ScanCharge += deltaTime;
 
@@ -77,7 +77,7 @@ void ASoldierAIController::Tick(float deltaTime)
 		{
 			TArray<FOverlapResult> res;
 
-			if (GetWorld()->OverlapMultiByChannel(res, chr->GetActorLocation(), FQuat::Identity, ECollisionChannel::ECC_Visibility, FCollisionShape::MakeSphere(3000)))
+			if (GetWorld()->OverlapMultiByObjectType(res, chr->GetActorLocation(), FQuat::Identity, FCollisionObjectQueryParams::AllDynamicObjects, FCollisionShape::MakeSphere(3000)))
 			{
 				for (auto a : res)
 				{
@@ -94,7 +94,7 @@ void ASoldierAIController::Tick(float deltaTime)
 							params.AddIgnoredActor(chr);
 							params.AddIgnoredActor(a2);
 
-							if (a2->Team != chr->Team && !GetWorld()->LineTraceTestByChannel(chr->GetActorLocation(), a2->GetActorLocation(), ECollisionChannel::ECC_Visibility, params))
+							if (a2->Team != chr->Team && !GetWorld()->LineTraceTestByChannel(chr->GetActorLocation() + FVector(0,0,150), a2->GetActorLocation() + FVector(0, 0, 150), ECollisionChannel::ECC_Visibility, params))
 							{
 								Aggro(a2);
 							}
@@ -117,6 +117,17 @@ void ASoldierAIController::Tick(float deltaTime)
 					}
 				}
 			}
+		}
+
+		if (AggroedOn)
+		{
+			SetControlRotation((AggroedOn->GetActorLocation() - chr->GetActorLocation()).ToOrientationRotator());
+			chr->OnStartFire();
+			chr->ShotsFired = 0;
+		}
+		else
+		{
+			chr->OnStopFire();
 		}
 	}
 }

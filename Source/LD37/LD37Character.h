@@ -75,20 +75,24 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint32 bUsingMotionControllers : 1;
 
+	/** Fires a projectile. */
+	void OnStartFire();
+
+	void OnStopFire();
+
+	int32 ShotsFired;
+
 protected:
 
 	bool IsFiring;
 
 	float ShotCharge;
 
-	int32 ShotsFired;
+	
 
 	void OnFire();
 	
-	/** Fires a projectile. */
-	void OnStartFire();
-
-	void OnStopFire();
+	
 
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();

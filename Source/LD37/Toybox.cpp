@@ -84,6 +84,20 @@ void AToybox::Tick( float DeltaTime )
 	}
 }
 
+float AToybox::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	float amt = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	Health -= amt;
+
+	if (Health <= 0)
+	{
+		Destroy();
+	}
+
+	return amt;
+}
+
 ALD37Character* AToybox::SpawnToy(TSubclassOf<class ALD37Character> type)
 {
 	FVector deltaToCenter = FVector(0, 0, 0) - SpawnPoint->GetComponentLocation();

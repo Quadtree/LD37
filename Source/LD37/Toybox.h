@@ -46,6 +46,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Health)
 	float Health;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 private:
 	ALD37Character* SpawnToy(TSubclassOf<class ALD37Character> type);
 };
