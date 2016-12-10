@@ -142,12 +142,12 @@ protected:
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
-	TArray<bool> HasWeapon;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
 	int32 CurrentWeapon;
 
 public:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
+	TArray<bool> HasWeapon;
+
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/

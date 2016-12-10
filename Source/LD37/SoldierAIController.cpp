@@ -121,6 +121,15 @@ void ASoldierAIController::Tick(float deltaTime)
 
 		if (AggroedOn)
 		{
+			int32 bestWeapon = 0;
+
+			for (bestWeapon = 3; bestWeapon >= 0; --bestWeapon)
+			{
+				if (chr->HasWeapon[bestWeapon] && chr->AmmoCounts[chr->WeaponDescriptions[bestWeapon].AmmoType] > 0) break;
+			}
+
+			chr->SelectWeapon(bestWeapon);
+
 			SetControlRotation((AggroedOn->GetActorLocation() - chr->GetActorLocation()).ToOrientationRotator());
 			chr->OnStartFire();
 			chr->ShotsFired = 0;
