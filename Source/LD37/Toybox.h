@@ -29,9 +29,18 @@ public:
 	UPROPERTY(EditAnywhere, Category = Spawn)
 	int32 MinGrunts;
 
+	UPROPERTY(EditAnywhere, Category = Team)
+	int32 Team;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Team)
 	TSubclassOf<class ALD37Character> OfficerType;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Team)
 	TSubclassOf<class ALD37Character> GruntType;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Spawn)
+	class USceneComponent* SpawnPoint;
+
+	UPROPERTY()
+	float SpawnCharge;
 };
