@@ -110,8 +110,6 @@ void ALD37Character::BeginPlay()
 	if (FMath::FRand() <= 0.02f * Health) HasWeapon[2] = true;
 	if (FMath::FRand() <= 0.01f * Health) HasWeapon[3] = true;
 
-	HasWeapon[1] = true;
-
 	for (int32 i = 0; i < HasWeapon.Num(); ++i)
 	{
 		if (HasWeapon[i])
