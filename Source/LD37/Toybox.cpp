@@ -60,14 +60,16 @@ void AToybox::Tick( float DeltaTime )
 		launchVel.Z = 3;
 		launchVel *= 2000;
 
-		UE_LOG(LogTemp, Display, TEXT("Launch=%s"), *launchVel.ToString());
+		//UE_LOG(LogTemp, Display, TEXT("Launch=%s"), *launchVel.ToString());
 
 		while (officersUp < MinOfficers)
 		{
 			auto officer = GetWorld()->SpawnActor<ALD37Character>(OfficerType, SpawnPoint->GetComponentLocation(), SpawnPoint->GetComponentRotation());
-			if (officer) {
+			if (officer)
+			{
 				officer->SpawnDefaultController();
-				officer->LaunchCharacter(launchVel, true, true);
+				officer->LaunchCharacter(launchVel + FMath::RandPointInBox(FBox(FVector(-100,-100,-100), FVector(100,100,100))), true, true);
+				officer->Team = Team;
 			}
 			officersUp++;
 		}
