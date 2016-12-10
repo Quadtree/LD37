@@ -163,6 +163,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
 	TArray<FWeaponDescription> WeaponDescriptions;
 
+	TMap<int32, int32> AmmoCounts;
+
 	void Tick(float deltaTime);
 
 	void SelectWeapon0();

@@ -105,6 +105,21 @@ void ALD37Character::BeginPlay()
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+
+	for (int32 i = 0; i < HasWeapon.Num(); ++i)
+	{
+		if (HasWeapon[i])
+		{
+			if (!AmmoCounts.Contains(WeaponDescriptions[i].AmmoType))
+				AmmoCounts.Add(WeaponDescriptions[i].AmmoType, WeaponDescriptions[i].StartAmmo);
+			else
+				AmmoCounts[WeaponDescriptions[i].AmmoType] += WeaponDescriptions[i].StartAmmo;
+		}
+		else
+		{
+			if (!AmmoCounts.Contains(WeaponDescriptions[i].AmmoType)) AmmoCounts.Add(WeaponDescriptions[i].AmmoType, 0);
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

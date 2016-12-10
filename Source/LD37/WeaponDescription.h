@@ -27,4 +27,10 @@ struct LD37_API FWeaponDescription
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	class UStaticMesh* GunModel;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	int32 AmmoType;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	int32 StartAmmo;
 };
