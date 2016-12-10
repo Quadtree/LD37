@@ -12,5 +12,6 @@ Saved/*
 *.ter
 *.VC.db
 Build/*NoEditor
+.~*
 
 !Screenshots
