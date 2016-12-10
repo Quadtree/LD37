@@ -76,6 +76,12 @@ ALD37Character::ALD37Character()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
+	// all soldiers start with the battle rifle
+	HasWeapon.Add(true);
+	HasWeapon.Add(false);
+	HasWeapon.Add(false);
+	HasWeapon.Add(false);
+
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
 }
