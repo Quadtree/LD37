@@ -1,6 +1,7 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
 #include "GameFramework/Character.h"
+#include "WeaponDescription.h"
 #include "LD37Character.generated.h"
 
 class UInputComponent;
@@ -75,9 +76,19 @@ public:
 	uint32 bUsingMotionControllers : 1;
 
 protected:
+
+	bool IsFiring;
+
+	float ShotCharge;
+
+	int32 ShotsFired;
+
+	void OnFire();
 	
 	/** Fires a projectile. */
-	void OnFire();
+	void OnStartFire();
+
+	void OnStopFire();
 
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
@@ -126,10 +137,10 @@ protected:
 	 */
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = Weapon)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
 	TArray<bool> HasWeapon;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = Weapon)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
 	int32 CurrentWeapon;
 
 public:
@@ -148,5 +159,10 @@ public:
 	TArray<class UMaterial*> TeamMaterials;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
+	TArray<FWeaponDescription> WeaponDescriptions;
+
+	void Tick(float deltaTime);
 };
 

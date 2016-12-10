@@ -22,5 +22,9 @@ struct LD37_API FWeaponDescription
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	bool FullyAutomatic;
 	
-	
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	bool InheritMaterial;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	class UStaticMesh* GunModel;
 };

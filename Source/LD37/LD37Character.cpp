@@ -121,7 +121,8 @@ void ALD37Character::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	//InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &ALD37Character::TouchStarted);
 	if (EnableTouchscreenMovement(PlayerInputComponent) == false)
 	{
-		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ALD37Character::OnFire);
+		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ALD37Character::OnStartFire);
+		PlayerInputComponent->BindAction("Fire", IE_Released, this, &ALD37Character::OnStopFire);
 	}
 
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ALD37Character::OnResetVR);
@@ -140,6 +141,10 @@ void ALD37Character::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 void ALD37Character::OnFire()
 {
+	if (!WeaponDescriptions[CurrentWeapon].FullyAutomatic && ShotsFired >= 1) return;
+
+	if (ShotCharge < WeaponDescriptions[CurrentWeapon].ShotCooldown) return;
+
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
 	{
@@ -165,6 +170,9 @@ void ALD37Character::OnFire()
 				// spawn the projectile at the muzzle
 				World->SpawnActor<ALD37Projectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 			}
+
+			ShotsFired++;
+			ShotCharge = 0;
 		}
 	}
 
@@ -173,17 +181,17 @@ void ALD37Character::OnFire()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
+}
 
-	// try and play a firing animation if specified
-	if (FireAnimation != NULL)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if (AnimInstance != NULL)
-		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
-		}
-	}
+void ALD37Character::OnStartFire()
+{
+	IsFiring = true;
+	ShotsFired = 0;
+}
+
+void ALD37Character::OnStopFire()
+{
+	IsFiring = false;
 }
 
 void ALD37Character::OnResetVR()
@@ -312,4 +320,13 @@ float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 	}
 
 	return amt;
+}
+
+void ALD37Character::Tick(float deltaTime)
+{
+	Super::Tick(deltaTime);
+
+	if (IsFiring) OnFire();
+
+	ShotCharge += deltaTime;
 }
