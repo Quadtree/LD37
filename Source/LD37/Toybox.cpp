@@ -40,7 +40,7 @@ void AToybox::Tick( float DeltaTime )
 
 		for (TActorIterator<ALD37Character> i(GetWorld()); i; ++i)
 		{
-			if (i->Team == Team)
+			if (i->Team == Team && i->Health > 0)
 			{
 				if (i->GetClass()->IsChildOf(OfficerType))
 				{

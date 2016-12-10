@@ -33,11 +33,10 @@ ALD37Projectile::ALD37Projectile()
 
 void ALD37Projectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
+	if (OtherActor)
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
-		Destroy();
+		OtherActor->TakeDamage(DamageOnHit, FDamageEvent(), GetInstigatorController(), this);
 	}
+
+	Destroy();
 }

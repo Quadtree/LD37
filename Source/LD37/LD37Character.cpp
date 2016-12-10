@@ -298,3 +298,18 @@ bool ALD37Character::EnableTouchscreenMovement(class UInputComponent* PlayerInpu
 	}
 	return bResult;
 }
+
+float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	float amt = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	Health -= amt;
+
+	if (Health <= 0)
+	{
+		// @todo: Ragdoll and such here
+		Destroy();
+	}
+
+	return amt;
+}
