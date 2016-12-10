@@ -183,7 +183,7 @@ void ALD37Character::OnFire()
 			{
 				const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
 				const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
-				newPrj = World->SpawnActor<ALD37Projectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+				newPrj = World->SpawnActor<ALD37Projectile>(WeaponDescriptions[CurrentWeapon].ProjectileType, SpawnLocation, SpawnRotation);
 			}
 			else
 			{
@@ -198,7 +198,7 @@ void ALD37Character::OnFire()
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 				// spawn the projectile at the muzzle
-				newPrj = World->SpawnActor<ALD37Projectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				newPrj = World->SpawnActor<ALD37Projectile>(WeaponDescriptions[CurrentWeapon].ProjectileType, SpawnLocation, SpawnRotation, ActorSpawnParams);
 			}
 
 			if (newPrj && WeaponDescriptions[CurrentWeapon].InheritMaterial)
