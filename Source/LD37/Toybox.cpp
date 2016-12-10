@@ -53,28 +53,41 @@ void AToybox::Tick( float DeltaTime )
 			}
 		}
 
-		FVector deltaToCenter = FVector(0, 0, 0) - SpawnPoint->GetComponentLocation();
-		deltaToCenter.Normalize();
-
-		FVector launchVel = deltaToCenter;
-		launchVel.Z = 3;
-		launchVel *= 2000;
+		
 
 		//UE_LOG(LogTemp, Display, TEXT("Launch=%s"), *launchVel.ToString());
 
 		while (officersUp < MinOfficers)
 		{
-			auto officer = GetWorld()->SpawnActor<ALD37Character>(OfficerType, SpawnPoint->GetComponentLocation(), SpawnPoint->GetComponentRotation());
-			if (officer)
-			{
-				officer->SpawnDefaultController();
-				officer->LaunchCharacter(launchVel + FMath::RandPointInBox(FBox(FVector(-100,-100,-100), FVector(100,100,100))), true, true);
-				officer->Team = Team;
-			}
+			SpawnToy(OfficerType);
 			officersUp++;
 		}
 
+		while (gruntsUp < MinGrunts)
+		{
+			SpawnToy(GruntType);
+			gruntsUp++;
+		}
+
 		SpawnCharge = 0;
+	}
+}
+
+void AToybox::SpawnToy(TSubclassOf<class ALD37Character> type)
+{
+	FVector deltaToCenter = FVector(0, 0, 0) - SpawnPoint->GetComponentLocation();
+	deltaToCenter.Normalize();
+
+	FVector launchVel = deltaToCenter;
+	launchVel.Z = 3;
+	launchVel *= 2000;
+
+	auto officer = GetWorld()->SpawnActor<ALD37Character>(type, SpawnPoint->GetComponentLocation() + FMath::RandPointInBox(FBox(FVector(-100, -100, 0), FVector(100, 100, 0))), SpawnPoint->GetComponentRotation());
+	if (officer)
+	{
+		officer->SpawnDefaultController();
+		officer->LaunchCharacter(launchVel + FMath::RandPointInBox(FBox(FVector(-100, -100, -100), FVector(100, 100, 100))), true, true);
+		officer->Team = Team;
 	}
 }
 
