@@ -23,4 +23,15 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Mesh)
 	class UStaticMeshComponent* StaticMesh;
 	
+	UPROPERTY(EditAnywhere, Category = Spawn)
+	int32 MinOfficers;
+
+	UPROPERTY(EditAnywhere, Category = Spawn)
+	int32 MinGrunts;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Team)
+	TSubclassOf<class ALD37Character> OfficerType;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Team)
+	TSubclassOf<class ALD37Character> GruntType;
 };

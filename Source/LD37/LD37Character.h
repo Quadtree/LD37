@@ -126,7 +126,11 @@ protected:
 	 */
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = Weapon)
 	TArray<bool> HasWeapon;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = Weapon)
+	int32 CurrentWeapon;
 
 public:
 	/** Returns Mesh1P subobject **/
@@ -134,5 +138,13 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Health)
+	float Health;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Team)
+	int32 Team;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Team)
+	TArray<class UMaterial*> TeamMaterials;
 };
 
