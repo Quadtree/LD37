@@ -44,5 +44,5 @@ public:
 	UPROPERTY()
 	float SpawnCharge;
 private:
-	void SpawnToy(TSubclassOf<class ALD37Character> type);
+	ALD37Character* SpawnToy(TSubclassOf<class ALD37Character> type);
 };

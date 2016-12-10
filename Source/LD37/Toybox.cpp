@@ -53,13 +53,23 @@ void AToybox::Tick( float DeltaTime )
 			}
 		}
 
-		
-
 		//UE_LOG(LogTemp, Display, TEXT("Launch=%s"), *launchVel.ToString());
 
 		while (officersUp < MinOfficers)
 		{
-			SpawnToy(OfficerType);
+			auto officer = SpawnToy(OfficerType);
+
+			if (officer && Team == 0)
+			{
+				for (TActorIterator<APlayerController> i(GetWorld()); i; ++i)
+				{
+					if (!Cast<ALD37Character>(i->GetPawn()) || Cast<ALD37Character>(i->GetPawn())->Health <= 0)
+					{
+						i->Possess(officer);
+					}
+				}
+			}
+
 			officersUp++;
 		}
 
@@ -73,7 +83,7 @@ void AToybox::Tick( float DeltaTime )
 	}
 }
 
-void AToybox::SpawnToy(TSubclassOf<class ALD37Character> type)
+ALD37Character* AToybox::SpawnToy(TSubclassOf<class ALD37Character> type)
 {
 	FVector deltaToCenter = FVector(0, 0, 0) - SpawnPoint->GetComponentLocation();
 	deltaToCenter.Normalize();
@@ -89,5 +99,7 @@ void AToybox::SpawnToy(TSubclassOf<class ALD37Character> type)
 		officer->LaunchCharacter(launchVel + FMath::RandPointInBox(FBox(FVector(-100, -100, -100), FVector(100, 100, 100))), true, true);
 		officer->Team = Team;
 	}
+
+	return officer;
 }
 
