@@ -20,6 +20,7 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	UPROPERTY(VisibleAnywhere, Category = Mesh)
 	class UStaticMeshComponent* StaticMesh;
 	
 };
