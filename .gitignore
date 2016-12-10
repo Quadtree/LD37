@@ -1,0 +1,16 @@
+Binaries/*
+DerivedDataCache/*
+Intermediate/*
+Saved/*
+*.suo
+*.sln
+*.sdf
+*.opensdf
+*.opendb
+Saved/*
+*.r16
+*.ter
+*.VC.db
+Build/*NoEditor
+
+!Screenshots
