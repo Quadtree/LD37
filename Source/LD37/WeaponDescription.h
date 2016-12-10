@@ -33,4 +33,7 @@ struct LD37_API FWeaponDescription
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	int32 StartAmmo;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float Spread;
 };

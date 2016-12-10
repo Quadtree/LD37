@@ -130,7 +130,7 @@ void ASoldierAIController::Tick(float deltaTime)
 
 			chr->SelectWeapon(bestWeapon);
 
-			SetControlRotation((AggroedOn->GetActorLocation() - chr->GetActorLocation()).ToOrientationRotator());
+			SetControlRotation((AggroedOn->GetActorLocation() - chr->GetActorLocation()).ToOrientationRotator() + FRotator(FMath::FRandRange(-1, 1), FMath::FRandRange(-1, 1), FMath::FRandRange(-1, 1)));
 			chr->OnStartFire();
 			chr->ShotsFired = 0;
 		}
