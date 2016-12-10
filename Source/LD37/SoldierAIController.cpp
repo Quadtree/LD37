@@ -5,6 +5,7 @@
 #include "LD37Character.h"
 #include "EngineUtils.h"
 #include "Toybox.h"
+#include "DrawDebugHelpers.h"
 
 void ASoldierAIController::Tick(float deltaTime)
 {
@@ -12,39 +13,125 @@ void ASoldierAIController::Tick(float deltaTime)
 
 	ALD37Character* chr = Cast<ALD37Character>(GetPawn());
 
+	if (AggroedOn)
+	{
+		if (auto c = Cast<ALD37Character>(AggroedOn)) if (c->Health <= 0) StopAggro();
+		if (auto c = Cast<AToybox>(AggroedOn)) if (c->Health <= 0) StopAggro();
+	}
+
 	if (chr)
 	{
 		if (chr->GetVelocity().Size() < 100)
 		{
-			StuckTime += deltaTime;
+			PathCharge += deltaTime;
 
-			//UE_LOG(LogTemp, Display, TEXT("StuckTime=%s"), *FString::SanitizeFloat(StuckTime));
-
-			FVector enemyToyboxLocation = FVector(0, 0, 0);
-
-			for (TActorIterator<AToybox> i(GetWorld()); i; ++i)
+			if (PathCharge > 1)
 			{
-				if (i->Team != chr->Team)
+				StuckTime += PathCharge;
+				PathCharge = 0;
+
+				//UE_LOG(LogTemp, Display, TEXT("StuckTime=%s"), *FString::SanitizeFloat(StuckTime));
+
+				if (!AggroedOn)
 				{
-					enemyToyboxLocation = i->GetActorLocation();
-					break;
+					FVector enemyToyboxLocation = FVector(0, 0, 0);
+
+					for (TActorIterator<AToybox> i(GetWorld()); i; ++i)
+					{
+						if (i->Team != chr->Team)
+						{
+							enemyToyboxLocation = i->GetActorLocation();
+							break;
+						}
+					}
+
+					FVector centerPoint = (chr->GetActorLocation() + enemyToyboxLocation) / 2;
+					centerPoint.Z = chr->GetActorLocation().Z;
+					centerPoint += FMath::RandPointInBox(FBox(FVector(-5000, -5000, 0), FVector(5000, 5000, 0)));
+
+					auto pathResult = MoveToLocation(centerPoint, 200);
+
+					if (pathResult == EPathFollowingRequestResult::AlreadyAtGoal) StuckTime = 0;
+				}
+				else
+				{
+					Aggro(AggroedOn);
 				}
 			}
-
-			FVector centerPoint = (chr->GetActorLocation() + enemyToyboxLocation) / 2;
-			centerPoint.Z = chr->GetActorLocation().Z;
-			centerPoint += FMath::RandPointInBox(FBox(FVector(-5000, -5000, 0), FVector(5000, 5000, 0)));
-
-			MoveToLocation(centerPoint, 200);
 		}
 		else
 		{
 			StuckTime = 0;
 		}
 
-		if (StuckTime > 3)
+		if (StuckTime > 5)
 		{
-			chr->Destroy();
+			//chr->Destroy();
+		}
+
+		DrawDebugString(GetWorld(), chr->GetActorLocation(), *FString::SanitizeFloat(StuckTime), nullptr, FColor::Red, deltaTime, true);
+
+		ScanCharge += deltaTime;
+
+		if (ScanCharge > 2)
+		{
+			TArray<FOverlapResult> res;
+
+			if (GetWorld()->OverlapMultiByChannel(res, chr->GetActorLocation(), FQuat::Identity, ECollisionChannel::ECC_Visibility, FCollisionShape::MakeSphere(3000)))
+			{
+				for (auto a : res)
+				{
+					if (auto a2 = Cast<ALD37Character>(a.Actor.Get()))
+					{
+						float aggroDistSquared = 9999999999;
+						if (AggroedOn) aggroDistSquared = FVector::DistSquared(chr->GetActorLocation(), AggroedOn->GetActorLocation());
+
+						float distSquared = FVector::DistSquared(chr->GetActorLocation(), a2->GetActorLocation());
+
+						if (distSquared < aggroDistSquared)
+						{
+							FCollisionQueryParams params;
+							params.AddIgnoredActor(chr);
+							params.AddIgnoredActor(a2);
+
+							if (a2->Team != chr->Team && !GetWorld()->LineTraceTestByChannel(chr->GetActorLocation(), a2->GetActorLocation(), ECollisionChannel::ECC_Visibility, params))
+							{
+								Aggro(a2);
+							}
+						}
+					}
+				}
+
+				if (!AggroedOn)
+				{
+					for (auto a : res)
+					{
+						if (auto a2 = Cast<AToybox>(a.Actor.Get()))
+						{
+							if (a2->Team != chr->Team)
+							{
+								Aggro(a2);
+								break;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
+}
+
+void ASoldierAIController::Aggro(AActor * target)
+{
+	AggroedOn = target;
+
+	auto pathResult = MoveToActor(target, 2000);
+
+	if (pathResult == EPathFollowingRequestResult::AlreadyAtGoal) StuckTime = 0;
+}
+
+void ASoldierAIController::StopAggro()
+{
+	AggroedOn = nullptr;
+	StopMovement();
 }

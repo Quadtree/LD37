@@ -43,6 +43,9 @@ public:
 
 	UPROPERTY()
 	float SpawnCharge;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Health)
+	float Health;
 private:
 	ALD37Character* SpawnToy(TSubclassOf<class ALD37Character> type);
 };

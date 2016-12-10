@@ -16,4 +16,13 @@ class LD37_API ASoldierAIController : public AAIController
 	void Tick(float deltaTime);
 	
 	float StuckTime;
+
+	float ScanCharge;
+
+	float PathCharge;
+
+	AActor* AggroedOn;
+
+	void Aggro(AActor* target);
+	void StopAggro();
 };
