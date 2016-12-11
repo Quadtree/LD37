@@ -389,7 +389,7 @@ float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 		looseWeapon->Mesh->AddImpulse(FMath::RandPointInBox(FBox(FVector(-100, -100, 500), FVector(100, 100, 1000))), NAME_None, true);
 		looseWeapon->Ammo = currentAmmo;
 		looseWeapon->SetWeaponType(this, CurrentWeapon);
-		looseWeapon->LifeSpan = 45;
+		looseWeapon->LifeSpan = 20;
 	}
 
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
