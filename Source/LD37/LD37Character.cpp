@@ -210,13 +210,18 @@ void ALD37Character::OnFire()
 				newPrj = World->SpawnActor<ALD37Projectile>(WeaponDescriptions[CurrentWeapon].ProjectileType, SpawnLocation, SpawnRotation, ActorSpawnParams);
 			}
 
+			if (newPrj)
+			{
+				newPrj->Instigator = this;
+			}
+
 			if (newPrj && WeaponDescriptions[CurrentWeapon].InheritMaterial)
 			{
 				for (auto& a : newPrj->GetComponentsByClass(UPrimitiveComponent::StaticClass()))
 				{
 					if (auto a2 = Cast<UPrimitiveComponent>(a))
 					{
-						a2->SetMaterial(0, TeamMaterials[Team]);
+						a2->SetMaterial(0, WeaponMaterials[CurrentWeapon]);
 					}
 				}
 			}
