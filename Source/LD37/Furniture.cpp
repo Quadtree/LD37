@@ -45,7 +45,7 @@ float AFurniture::TakeDamage(float DamageAmount, FDamageEvent const & DamageEven
 
 				CompDamage[a2] += actualDamage;
 
-				if (CompDamage[a2] > 0.1f)
+				if (CompDamage[a2] > 3.f)
 				{
 					GoFlipping(a2, evt->Origin, actualDamage);
 
