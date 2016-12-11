@@ -49,6 +49,9 @@ ALD37Character::ALD37Character()
 	FP_MuzzleLocation->SetupAttachment(FP_Gun);
 	FP_MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));
 
+	GunMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GunMesh"));
+	GunMesh->SetupAttachment(FP_Gun);
+
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 

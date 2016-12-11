@@ -42,6 +42,9 @@ class ALD37Character : public ACharacter
 	/** Motion controller (left hand) */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UMotionControllerComponent* L_MotionController;
+
+	UPROPERTY(VisibleAnywhere, Category = Mesh)
+	class UStaticMeshComponent* GunMesh;
 public:
 	ALD37Character();
 
