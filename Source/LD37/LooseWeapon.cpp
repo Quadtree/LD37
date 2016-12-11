@@ -15,8 +15,13 @@ ALooseWeapon::ALooseWeapon()
 	Root->SetRelativeScale3D(FVector(0.056642f));
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	Mesh->SetupAttachment(Root);
+	Mesh->SetNotifyRigidBodyCollision(true);
+
+	Mesh->OnComponentHit.AddDynamic(this, &ALooseWeapon::OnHit);
 
 	Mesh->SetSimulatePhysics(true);
+
+	
 
 	RootComponent = Root;
 
@@ -46,5 +51,18 @@ void ALooseWeapon::SetWeaponType(ALD37Character* chrRef, int32 weaponType)
 
 	Mesh->SetStaticMesh(chrRef->WeaponDescriptions[weaponType].GunModel);
 	Mesh->SetMaterial(0, chrRef->TeamMaterials[chrRef->Team]);
+}
+
+void ALooseWeapon::OnHit(UPrimitiveComponent * HitComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, FVector NormalImpulse, const FHitResult & Hit)
+{
+	if (auto act = Cast<ALD37Character>(OtherActor))
+	{
+		if (act->Health > 0)
+		{
+			act->AmmoCounts[act->WeaponDescriptions[WeaponType].AmmoType] += Ammo;
+			act->HasWeapon[WeaponType] = true;
+			Destroy();
+		}
+	}
 }
 
