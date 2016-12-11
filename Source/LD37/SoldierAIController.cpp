@@ -123,7 +123,7 @@ void ASoldierAIController::Tick(float deltaTime)
 		{
 			int32 bestWeapon = 0;
 
-			for (bestWeapon = 3; bestWeapon >= 0; --bestWeapon)
+			for (bestWeapon = 2; bestWeapon >= 0; --bestWeapon)
 			{
 				if (chr->HasWeapon[bestWeapon] && chr->AmmoCounts[chr->WeaponDescriptions[bestWeapon].AmmoType] > 0) break;
 			}

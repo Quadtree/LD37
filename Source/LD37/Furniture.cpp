@@ -51,7 +51,7 @@ float AFurniture::TakeDamage(float DamageAmount, FDamageEvent const & DamageEven
 
 					TArray<FHitResult> hr;
 
-					if (GetWorld()->LineTraceMultiByObjectType(hr, a2->GetComponentLocation(), a2->GetComponentLocation() + FVector(0, 0, 1000), FCollisionObjectQueryParams::AllObjects))
+					if (GetWorld()->LineTraceMultiByObjectType(hr, a2->GetComponentLocation(), a2->GetComponentLocation() + FVector(0, 0, 50000), FCollisionObjectQueryParams::AllObjects))
 					{
 						for (auto hit : hr)
 						{
@@ -61,6 +61,14 @@ float AFurniture::TakeDamage(float DamageAmount, FDamageEvent const & DamageEven
 							}
 						}
 					}
+
+					/*for (auto sc : GetComponentsByClass(UPrimitiveComponent::StaticClass()))
+					{
+						if (auto sc2 = Cast<UPrimitiveComponent>(sc))
+						{
+							GoFlipping(sc2, evt->Origin, actualDamage);
+						}
+					}*/
 				}
 			}
 		}
