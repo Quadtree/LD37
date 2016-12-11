@@ -6,6 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "GameFramework/InputSettings.h"
 #include "Kismet/HeadMountedDisplayFunctionLibrary.h"
+#include "LooseWeapon.h"
 #include "MotionControllerComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -354,16 +355,24 @@ float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 {
 	float amt = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	bool wasAlive = Health > 0;
+
 	Health -= amt;
 
-	if (Health <= 0)
+	if (Health <= 0 && wasAlive)
 	{
-		// @todo: Ragdoll and such here
-		//Destroy();
-
 		GetCharacterMovement()->SetActive(false);
 		GetMesh()->SetSimulatePhysics(true);
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		GunMesh->SetVisibility(false);
+
+		int32 currentAmmo = AmmoCounts[WeaponDescriptions[CurrentWeapon].AmmoType];
+
+		auto looseWeapon = GetWorld()->SpawnActor<ALooseWeapon>(GetActorLocation(), FRotator::ZeroRotator);
+		looseWeapon->Mesh->AddImpulse(FMath::RandPointInBox(FBox(FVector(-100, -100, 500), FVector(100, 100, 1000))), NAME_None, true);
+		looseWeapon->Ammo = currentAmmo;
+		looseWeapon->SetWeaponType(this, CurrentWeapon);
+		looseWeapon->LifeSpan = 45;
 	}
 
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
