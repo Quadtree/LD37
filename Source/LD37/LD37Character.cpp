@@ -176,6 +176,7 @@ void ALD37Character::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 void ALD37Character::OnFire()
 {
 	if (!WeaponDescriptions[CurrentWeapon].FullyAutomatic && ShotsFired >= 1) return;
+	if (AmmoCounts[WeaponDescriptions[CurrentWeapon].AmmoType] <= 0) return;
 
 	if (ShotCharge < WeaponDescriptions[CurrentWeapon].ShotCooldown) return;
 
@@ -221,6 +222,7 @@ void ALD37Character::OnFire()
 			}
 
 			ShotsFired++;
+			--AmmoCounts[WeaponDescriptions[CurrentWeapon].AmmoType];
 			ShotCharge = 0;
 		}
 	}
