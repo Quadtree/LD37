@@ -170,6 +170,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
 	TArray<FWeaponDescription> WeaponDescriptions;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
+	TArray<class UMaterialInterface*> WeaponMaterials;
+
 	TMap<int32, int32> AmmoCounts;
 
 	void Tick(float deltaTime);

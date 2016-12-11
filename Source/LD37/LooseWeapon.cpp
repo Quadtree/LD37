@@ -50,7 +50,7 @@ void ALooseWeapon::SetWeaponType(ALD37Character* chrRef, int32 weaponType)
 	WeaponType = weaponType;
 
 	Mesh->SetStaticMesh(chrRef->WeaponDescriptions[weaponType].GunModel);
-	Mesh->SetMaterial(0, chrRef->TeamMaterials[chrRef->Team]);
+	Mesh->SetMaterial(0, chrRef->WeaponMaterials[weaponType]);
 }
 
 void ALooseWeapon::OnHit(UPrimitiveComponent * HitComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, FVector NormalImpulse, const FHitResult & Hit)
@@ -60,7 +60,12 @@ void ALooseWeapon::OnHit(UPrimitiveComponent * HitComp, AActor * OtherActor, UPr
 		if (act->Health > 0)
 		{
 			act->AmmoCounts[act->WeaponDescriptions[WeaponType].AmmoType] += Ammo;
-			act->HasWeapon[WeaponType] = true;
+			if (!act->HasWeapon[WeaponType])
+			{
+				act->HasWeapon[WeaponType] = true;
+				act->WeaponMaterials[WeaponType] = Mesh->GetMaterial(0);
+			}
+			
 			Destroy();
 		}
 	}

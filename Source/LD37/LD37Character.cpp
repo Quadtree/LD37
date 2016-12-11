@@ -85,6 +85,11 @@ ALD37Character::ALD37Character()
 	HasWeapon.Add(false);
 	HasWeapon.Add(false);
 
+	WeaponMaterials.Add(nullptr);
+	WeaponMaterials.Add(nullptr);
+	WeaponMaterials.Add(nullptr);
+	WeaponMaterials.Add(nullptr);
+
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
 }
@@ -445,7 +450,7 @@ void ALD37Character::SelectWeapon(int32 num)
 	CurrentWeapon = FMath::Clamp(num, 0, WeaponDescriptions.Num() - 1);
 
 	GunMesh->SetStaticMesh(WeaponDescriptions[CurrentWeapon].GunModel);
-	GunMesh->SetMaterial(0, TeamMaterials[Team]);
+	GunMesh->SetMaterial(0, WeaponMaterials[CurrentWeapon]);
 }
 
 void ALD37Character::SetTeam(int32 team)
@@ -458,5 +463,10 @@ void ALD37Character::SetTeam(int32 team)
 		{
 			a2->SetMaterial(0, TeamMaterials[Team]);
 		}
+	}
+
+	for (int32 i = 0; i < HasWeapon.Num(); ++i)
+	{
+		if (HasWeapon[i]) WeaponMaterials[i] = TeamMaterials[Team];
 	}
 }
