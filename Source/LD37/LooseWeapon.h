@@ -26,15 +26,15 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Model)
 	class UStaticMeshComponent* Mesh;
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, Category = Weapon)
 	int32 WeaponType;
 
 	void SetWeaponType(class ALD37Character* chrRef, int32 weaponType);
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, Category = Weapon)
 	int32 Ammo;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, Category = Weapon)
 	float LifeSpan;
 
 	UFUNCTION()

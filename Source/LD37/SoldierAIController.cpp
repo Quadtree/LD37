@@ -62,6 +62,12 @@ void ASoldierAIController::Tick(float deltaTime)
 		else
 		{
 			StuckTime = 0;
+			chr->StopJumping();
+		}
+
+		if (StuckTime > 2)
+		{
+			chr->Jump();
 		}
 
 		if (StuckTime > 5)
