@@ -42,4 +42,7 @@ struct LD37_API FWeaponDescription
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon)
 	class UTexture* Icon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon)
+	class USoundBase* ShootSound;
 };

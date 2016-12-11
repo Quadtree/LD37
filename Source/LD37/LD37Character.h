@@ -188,5 +188,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = Weapon)
 	int32 GetAmmoOfWeapon(int32 weaponId);
+
+	UPROPERTY(EditAnywhere, Category = Health)
+	class USoundBase* TakeDamageSound;
 };
 

@@ -231,6 +231,8 @@ void ALD37Character::OnFire()
 
 			if (AmmoCounts[WeaponDescriptions[CurrentWeapon].AmmoType] == 0) SelectWeapon(0);
 
+			if (WeaponDescriptions[CurrentWeapon].ShootSound) UGameplayStatics::PlaySoundAtLocation(this, WeaponDescriptions[CurrentWeapon].ShootSound, GetActorLocation(), 1, FMath::FRandRange(0.8f, 1.2f));
+
 			ShotCharge = 0;
 		}
 	}
@@ -412,6 +414,11 @@ float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 			LaunchCharacter(delta, false, false);
 		else
 			GetMesh()->AddImpulse(delta, FName("Bone"), true);
+	}
+
+	if (TakeDamageSound && amt > 0.1f && Cast<APlayerController>(GetController()))
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, TakeDamageSound, GetActorLocation());
 	}
 
 	return amt;

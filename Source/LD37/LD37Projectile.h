@@ -36,5 +36,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Hit)
 	class UParticleSystem* ParticleSystemOnHit;
+
+	UPROPERTY(EditAnywhere, Category = Hit)
+	class USoundBase* SoundOnHit;
 };
 
