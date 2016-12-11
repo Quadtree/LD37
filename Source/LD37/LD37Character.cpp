@@ -357,7 +357,10 @@ float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 	if (Health <= 0)
 	{
 		// @todo: Ragdoll and such here
-		Destroy();
+		//Destroy();
+
+		GetCharacterMovement()->SetActive(false);
+		GetMesh()->SetSimulatePhysics(true);
 	}
 
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
@@ -378,7 +381,10 @@ float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 
 		delta *= amt * 600;
 
-		LaunchCharacter(delta, false, false);
+		if (Health > 0)
+			LaunchCharacter(delta, false, false);
+		else
+			GetMesh()->AddImpulse(delta, FName("Bone"), true);
 	}
 
 	return amt;
@@ -387,6 +393,8 @@ float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 void ALD37Character::Tick(float deltaTime)
 {
 	Super::Tick(deltaTime);
+
+	if (Health <= 0) return;
 
 	if (IsFiring) OnFire();
 

@@ -107,7 +107,7 @@ ALD37Character* AToybox::SpawnToy(TSubclassOf<class ALD37Character> type)
 	launchVel.Z = 3;
 	launchVel *= 2000;
 
-	auto officer = GetWorld()->SpawnActor<ALD37Character>(type, SpawnPoint->GetComponentLocation() + FMath::RandPointInBox(FBox(FVector(-100, -100, 0), FVector(100, 100, 0))), SpawnPoint->GetComponentRotation());
+	auto officer = GetWorld()->SpawnActor<ALD37Character>(type, SpawnPoint->GetComponentLocation() + FMath::RandPointInBox(FBox(FVector(-100, -100, 0), FVector(100, 100, 0))), FRotator::ZeroRotator);
 	if (officer)
 	{
 		officer->SpawnDefaultController();
