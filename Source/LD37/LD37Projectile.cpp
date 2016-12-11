@@ -93,4 +93,6 @@ void ALD37Projectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 	}
 
 	Destroy();
+
+	if (ParticleSystemOnHit) UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleSystemOnHit, FTransform(GetActorLocation()));
 }
