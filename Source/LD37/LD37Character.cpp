@@ -360,6 +360,27 @@ float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 		Destroy();
 	}
 
+	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
+	{
+		UE_LOG(LogTemp, Display, TEXT("Knockback! %s"), *FString::SanitizeFloat(amt));
+	}
+
+	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID) && amt > 2)
+	{
+		
+
+		const FRadialDamageEvent* rde = (const FRadialDamageEvent*)&DamageEvent;
+
+		FVector delta = GetActorLocation() - rde->Origin;
+		delta.Normalize();
+
+		delta.Z = 1.5f;
+
+		delta *= amt * 600;
+
+		LaunchCharacter(delta, false, false);
+	}
+
 	return amt;
 }
 

@@ -3,6 +3,7 @@
 #include "LD37.h"
 #include "LD37Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "ExplosionDamageType.h"
 
 ALD37Projectile::ALD37Projectile() 
 {
@@ -33,9 +34,62 @@ ALD37Projectile::ALD37Projectile()
 
 void ALD37Projectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (OtherActor)
+	if (DamageRadiusOnHit < 3)
 	{
-		OtherActor->TakeDamage(DamageOnHit, FDamageEvent(), GetInstigatorController(), this);
+		if (OtherActor)
+		{
+			OtherActor->TakeDamage(DamageOnHit, FDamageEvent(), GetInstigatorController(), this);
+		}
+	}
+	else
+	{
+		UGameplayStatics::ApplyRadialDamage(this, DamageOnHit, GetActorLocation(), DamageRadiusOnHit, UExplosionDamageType::StaticClass(), TArray<AActor*>(), this, GetInstigatorController());
+
+		/*TArray<FOverlapResult> res;
+
+		FRadialDamageEvent evt;
+		evt.Origin = GetActorLocation();
+		evt.Params.BaseDamage = DamageOnHit;
+		evt.Params.DamageFalloff = 1;
+		evt.Params.InnerRadius = DamageRadiusOnHit / 2;
+		evt.Params.MinimumDamage = DamageOnHit / 4;
+		evt.Params.OuterRadius = DamageRadiusOnHit;
+
+		if (GetWorld()->OverlapMultiByObjectType(res, GetActorLocation(), FQuat::Identity, FCollisionObjectQueryParams::AllDynamicObjects, FCollisionShape::MakeSphere(DamageRadiusOnHit)))
+		{
+			TMap<AActor*, TArray<UPrimitiveComponent*>> compsHit;
+
+			for (auto a : res)
+			{
+				if (a.Actor.Get() && a.Component.Get())
+				{
+					if (!compsHit.Contains(a.Actor.Get())) compsHit.Add(a.Actor.Get(), TArray<UPrimitiveComponent*>());
+					
+					compsHit[a.Actor.Get()].Add(a.Component.Get());
+				}
+			}
+
+			for (auto a : compsHit)
+			{
+				evt.ComponentHits.Empty();
+
+				for (auto comp : a.Value)
+				{
+					FHitResult hr;
+					hr.Actor = a.Key;
+					hr.bBlockingHit = true;
+					hr.Component = comp;
+					hr.ImpactPoint = comp->GetComponentLocation();
+					hr.ImpactNormal = (comp->GetComponentLocation() - GetActorLocation()).GetSafeNormal();
+
+					evt.ComponentHits.Add(hr);
+				}
+
+				a.Key->TakeDamage(DamageOnHit, evt, GetInstigatorController(), this);
+
+				UE_LOG(LogTemp, Display, TEXT("Explosion hit %s"), *a.Key->GetName());
+			}
+		}*/
 	}
 
 	Destroy();
