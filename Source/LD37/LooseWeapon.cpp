@@ -50,7 +50,7 @@ void ALooseWeapon::SetWeaponType(ALD37Character* chrRef, int32 weaponType)
 	WeaponType = weaponType;
 
 	Mesh->SetStaticMesh(chrRef->WeaponDescriptions[weaponType].GunModel);
-	Mesh->SetMaterial(0, chrRef->WeaponMaterials[weaponType]);
+	if (chrRef->WeaponDescriptions[weaponType].GunInheritMaterial) Mesh->SetMaterial(0, chrRef->WeaponMaterials[weaponType]);
 }
 
 void ALooseWeapon::OnHit(UPrimitiveComponent * HitComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, FVector NormalImpulse, const FHitResult & Hit)

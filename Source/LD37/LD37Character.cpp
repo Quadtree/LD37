@@ -223,6 +223,9 @@ void ALD37Character::OnFire()
 
 			ShotsFired++;
 			--AmmoCounts[WeaponDescriptions[CurrentWeapon].AmmoType];
+
+			if (AmmoCounts[WeaponDescriptions[CurrentWeapon].AmmoType] == 0) SelectWeapon(0);
+
 			ShotCharge = 0;
 		}
 	}
@@ -451,10 +454,15 @@ void ALD37Character::SelectWeapon(int32 num)
 {
 	if (!HasWeapon[num]) return;
 
+	if (num != 0 && AmmoCounts[WeaponDescriptions[num].AmmoType] <= 0) return;
+
 	CurrentWeapon = FMath::Clamp(num, 0, WeaponDescriptions.Num() - 1);
 
 	GunMesh->SetStaticMesh(WeaponDescriptions[CurrentWeapon].GunModel);
-	GunMesh->SetMaterial(0, WeaponMaterials[CurrentWeapon]);
+	if (WeaponDescriptions[CurrentWeapon].GunInheritMaterial)
+		GunMesh->SetMaterial(0, WeaponMaterials[CurrentWeapon]);
+	else
+		GunMesh->SetMaterial(0, WeaponDescriptions[CurrentWeapon].GunModel->GetMaterial(0));
 }
 
 void ALD37Character::SetTeam(int32 team)

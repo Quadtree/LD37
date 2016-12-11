@@ -26,6 +26,9 @@ struct LD37_API FWeaponDescription
 	bool InheritMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon)
+	bool GunInheritMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon)
 	class UStaticMesh* GunModel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon)

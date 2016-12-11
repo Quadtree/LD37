@@ -92,6 +92,8 @@ float AToybox::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, 
 
 	if (Health <= 0)
 	{
+		if (DeathExplosion) UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathExplosion, FTransform(GetActorLocation()));
+
 		Destroy();
 	}
 
