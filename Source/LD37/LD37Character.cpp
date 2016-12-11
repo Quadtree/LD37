@@ -447,6 +447,8 @@ void ALD37Character::SelectWeapon3()
 
 void ALD37Character::SelectWeapon(int32 num)
 {
+	if (!HasWeapon[num]) return;
+
 	CurrentWeapon = FMath::Clamp(num, 0, WeaponDescriptions.Num() - 1);
 
 	GunMesh->SetStaticMesh(WeaponDescriptions[CurrentWeapon].GunModel);
@@ -469,4 +471,9 @@ void ALD37Character::SetTeam(int32 team)
 	{
 		if (HasWeapon[i]) WeaponMaterials[i] = TeamMaterials[Team];
 	}
+}
+
+int32 ALD37Character::GetAmmoOfWeapon(int32 weaponId)
+{
+	return AmmoCounts[WeaponDescriptions[weaponId].AmmoType];
 }

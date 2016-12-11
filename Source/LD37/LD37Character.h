@@ -173,6 +173,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Weapon)
 	TArray<class UMaterialInterface*> WeaponMaterials;
 
+	UPROPERTY(BlueprintReadOnly, Category = Weapon)
 	TMap<int32, int32> AmmoCounts;
 
 	void Tick(float deltaTime);
@@ -184,5 +185,8 @@ public:
 	void SelectWeapon(int32 num);
 
 	void SetTeam(int32 team);
+
+	UFUNCTION(BlueprintPure, Category = Weapon)
+	int32 GetAmmoOfWeapon(int32 weaponId);
 };
 

@@ -36,4 +36,7 @@ struct LD37_API FWeaponDescription
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon)
 	float Spread;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon)
+	class UTexture* Icon;
 };
