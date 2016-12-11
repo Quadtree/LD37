@@ -363,6 +363,7 @@ float ALD37Character::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 
 		GetCharacterMovement()->SetActive(false);
 		GetMesh()->SetSimulatePhysics(true);
+		GunMesh->SetVisibility(false);
 	}
 
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
@@ -396,7 +397,14 @@ void ALD37Character::Tick(float deltaTime)
 {
 	Super::Tick(deltaTime);
 
-	if (Health <= 0) return;
+	if (Health <= 0)
+	{
+		Health -= deltaTime;
+
+		if (Health < -15) Destroy();
+
+		return;
+	}
 
 	if (IsFiring) OnFire();
 
@@ -427,7 +435,8 @@ void ALD37Character::SelectWeapon(int32 num)
 {
 	CurrentWeapon = FMath::Clamp(num, 0, WeaponDescriptions.Num() - 1);
 
-	// @todo: Change model
+	GunMesh->SetStaticMesh(WeaponDescriptions[CurrentWeapon].GunModel);
+	GunMesh->SetMaterial(0, TeamMaterials[Team]);
 }
 
 void ALD37Character::SetTeam(int32 team)
