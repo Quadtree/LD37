@@ -452,11 +452,13 @@ void ALD37Character::SelectWeapon3()
 
 void ALD37Character::SelectWeapon(int32 num)
 {
+	num = FMath::Clamp(num, 0, WeaponDescriptions.Num() - 1);
+
 	if (!HasWeapon[num]) return;
 
 	if (num != 0 && AmmoCounts[WeaponDescriptions[num].AmmoType] <= 0) return;
 
-	CurrentWeapon = FMath::Clamp(num, 0, WeaponDescriptions.Num() - 1);
+	CurrentWeapon = num;
 
 	GunMesh->SetStaticMesh(WeaponDescriptions[CurrentWeapon].GunModel);
 	if (WeaponDescriptions[CurrentWeapon].GunInheritMaterial)
