@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "Components/ActorComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "FurnitureComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class LD37_API UFurnitureComponent : public UActorComponent
+class LD37_API UFurnitureComponent : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 
