@@ -29,7 +29,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = Spawn)
 	int32 MinGrunts;
 
-	UPROPERTY(EditAnywhere, Category = Team)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Team)
 	int32 Team;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Team)
@@ -43,6 +43,9 @@ public:
 
 	UPROPERTY()
 	float SpawnCharge;
+
+	UPROPERTY(EditAnywhere, Category = Spawn)
+	bool AutoPossess;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Health)
 	float Health;

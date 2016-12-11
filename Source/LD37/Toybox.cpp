@@ -60,7 +60,7 @@ void AToybox::Tick( float DeltaTime )
 		{
 			auto officer = SpawnToy(OfficerType);
 
-			if (officer && Team == 0)
+			if (officer && Team == 0 && AutoPossess)
 			{
 				for (TActorIterator<APlayerController> i(GetWorld()); i; ++i)
 				{
