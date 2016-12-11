@@ -47,19 +47,37 @@ float AFurniture::TakeDamage(float DamageAmount, FDamageEvent const & DamageEven
 
 				if (CompDamage[a2] > 0.1f)
 				{
-					a2->SetSimulatePhysics(true);
+					GoFlipping(a2, evt->Origin, actualDamage);
 
-					FVector delta = (a2->GetComponentLocation() - evt->Origin);
-					delta.Normalize();
-					delta.Z = 2;
-					delta *= 5000 * actualDamage;
-					
-					a2->AddImpulse(delta, NAME_None, true);
+					TArray<FHitResult> hr;
+
+					if (GetWorld()->LineTraceMultiByObjectType(hr, a2->GetComponentLocation(), a2->GetComponentLocation() + FVector(0, 0, 1000), FCollisionObjectQueryParams::AllObjects))
+					{
+						for (auto hit : hr)
+						{
+							if (hit.Component.Get() && hit.Component->GetOwner() == this)
+							{
+								GoFlipping(hit.Component.Get(), evt->Origin, 2);
+							}
+						}
+					}
 				}
 			}
 		}
 	}
 
 	return DamageAmount;
+}
+
+void AFurniture::GoFlipping(UPrimitiveComponent* comp, FVector origin, float actualDamage)
+{
+	comp->SetSimulatePhysics(true);
+
+	FVector delta = (comp->GetComponentLocation() - origin);
+	delta.Normalize();
+	delta.Z = 2;
+	delta *= 5000 * FMath::Min(actualDamage, 1.5f);
+
+	comp->AddImpulse(delta, NAME_None, true);
 }
 

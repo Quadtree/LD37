@@ -24,4 +24,6 @@ public:
 	
 	UPROPERTY()
 	TMap<class UActorComponent*, float> CompDamage;
+
+	void GoFlipping(class UPrimitiveComponent* comp, FVector origin, float actualDamage);
 };
