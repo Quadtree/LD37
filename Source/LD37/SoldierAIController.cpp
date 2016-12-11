@@ -62,12 +62,20 @@ void ASoldierAIController::Tick(float deltaTime)
 		else
 		{
 			StuckTime = 0;
-			chr->StopJumping();
+			//chr->StopJumping();
 		}
 
 		if (StuckTime > 2)
 		{
-			chr->Jump();
+			//chr->Jump();
+			//chr->AddMovementInput(chr->GetActorForwardVector(), 1);
+
+			FVector jump = chr->GetActorForwardVector();
+			jump.Normalize();
+			jump.Z = 2;
+			jump *= 1200;
+
+			chr->LaunchCharacter(jump, false, false);
 		}
 
 		if (StuckTime > 5)
