@@ -82,6 +82,8 @@ void AToybox::Tick( float DeltaTime )
 
 		SpawnCharge = 0;
 	}
+
+	if (GetActorLocation().X > 20000 || GetActorLocation().X < -20000 || GetActorLocation().Y > 20000 || GetActorLocation().Y < -20000 || GetActorLocation().Z > 20000 || GetActorLocation().Z < -2000) Destroy();
 }
 
 float AToybox::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)

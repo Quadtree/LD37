@@ -13,5 +13,6 @@ Saved/*
 *.VC.db
 Build/*NoEditor
 .~*
+Build/HTML5
 
 !Screenshots
