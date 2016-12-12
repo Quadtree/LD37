@@ -10,6 +10,8 @@ class ALD37GameMode : public AGameModeBase
 
 public:
 	ALD37GameMode();
+
+	void BeginPlay() override;
 };
 
 
