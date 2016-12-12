@@ -4,6 +4,8 @@
 #include "Toybox.h"
 #include "EngineUtils.h"
 #include "LD37Character.h"
+#include "Engine.h"
+#include "AudioDeviceManager.h"
 
 
 // Sets default values
@@ -25,6 +27,10 @@ void AToybox::BeginPlay()
 	Super::BeginPlay();
 	
 	SpawnCharge = 1000;
+
+	int32 numActive = GEngine->GetAudioDeviceManager()->GetNumActiveAudioDevices();
+
+	UE_LOG(LogTemp, Warning, TEXT("NumActive=%s"), *FString::FromInt(numActive));
 }
 
 // Called every frame
