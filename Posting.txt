@@ -1,0 +1,20 @@
+Plastic Regiment
+
+Note: Currently only the Windows version is available. A HTML5 version is in the works.
+
+Destroy the oppositing plastic regiment's toy box, and conquer the room!
+
+Controls:
+WASD - Move
+Space - Jump
+Mouse - Aim
+Left Mouse - Fire
+1-4 - Switch Weapons
+
+15
+29
+18
+27
+
+http://quadtree.info/ld/ld37/LD37.zip
+https://github.com/Quadtree/LD37
