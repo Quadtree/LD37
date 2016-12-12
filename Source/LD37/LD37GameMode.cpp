@@ -4,6 +4,7 @@
 #include "LD37GameMode.h"
 #include "LD37HUD.h"
 #include "LD37Character.h"
+#include "Engine.h"
 
 ALD37GameMode::ALD37GameMode()
 	: Super()
@@ -27,7 +28,7 @@ void ALD37GameMode::BeginPlay()
 	GEngine->GameUserSettings->ScalabilityQuality.ResolutionQuality = 0;
 	GEngine->GameUserSettings->ScalabilityQuality.TextureQuality = 0;
 	GEngine->GameUserSettings->ScalabilityQuality.ViewDistanceQuality = 0;
-	GEngine->GameUserSettings->ScalabilityQuality.ShadowQuality = 0;
-	GEngine->GameUserSettings->ApplySettings();
+	GEngine->GameUserSettings->ScalabilityQuality.ShadowQuality = 3;
+	GEngine->GameUserSettings->ApplySettings(true);
 #endif
 }
