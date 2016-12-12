@@ -14,6 +14,28 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 //////////////////////////////////////////////////////////////////////////
 // ALD37Character
 
+void ALD37Character::SetUsingMotionControllers(bool isUsingMotionControllers)
+{
+	bUsingMotionControllers = isUsingMotionControllers;
+
+	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
+	if (isUsingMotionControllers)
+	{
+		VR_Gun->SetHiddenInGame(false, true);
+		VR_GunMesh->SetHiddenInGame(false, true);
+		Mesh1P->SetHiddenInGame(true, true);
+		GunMesh->SetHiddenInGame(true, true);
+		
+	}
+	else
+	{
+		VR_Gun->SetHiddenInGame(true, true);
+		VR_GunMesh->SetHiddenInGame(true, true);
+		Mesh1P->SetHiddenInGame(false, true);
+		GunMesh->SetHiddenInGame(false, true);
+	}
+}
+
 ALD37Character::ALD37Character()
 {
 	// Set size for collision capsule
@@ -58,12 +80,18 @@ ALD37Character::ALD37Character()
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P, FP_Gun, and VR_Gun 
 	// are set in the derived blueprint asset named MyCharacter to avoid direct content references in C++.
 
+	VR_Root = CreateDefaultSubobject<USceneComponent>(TEXT("VR_Root"));
+	VR_Root->SetupAttachment(RootComponent);
+
 	// Create VR Controllers.
 	R_MotionController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("R_MotionController"));
 	R_MotionController->Hand = EControllerHand::Right;
-	R_MotionController->SetupAttachment(RootComponent);
+	R_MotionController->SetupAttachment(VR_Root);
 	L_MotionController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("L_MotionController"));
-	L_MotionController->SetupAttachment(RootComponent);
+	L_MotionController->SetupAttachment(VR_Root);
+
+	VR_GunMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VR_GunMesh"));
+	VR_GunMesh->SetupAttachment(R_MotionController);
 
 	// Create a gun and attach it to the right-hand VR controller.
 	// Create a gun mesh component
@@ -101,18 +129,6 @@ void ALD37Character::BeginPlay()
 
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-
-	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
-	if (bUsingMotionControllers)
-	{
-		VR_Gun->SetHiddenInGame(false, true);
-		Mesh1P->SetHiddenInGame(true, true);
-	}
-	else
-	{
-		VR_Gun->SetHiddenInGame(true, true);
-		Mesh1P->SetHiddenInGame(false, true);
-	}
 
 	if (FMath::FRand() <= 0.05f * Health) HasWeapon[1] = true;
 	if (FMath::FRand() <= 0.02f * Health) HasWeapon[2] = true;
@@ -428,6 +444,12 @@ void ALD37Character::Tick(float deltaTime)
 {
 	Super::Tick(deltaTime);
 
+	FRotator rot;
+	FVector vec;
+
+	UHeadMountedDisplayFunctionLibrary::GetOrientationAndPosition(rot, vec);
+	VR_Root->SetRelativeRotation(FRotator(0, -rot.Yaw, 0));
+
 	if (Health <= 0)
 	{
 		Health -= deltaTime;
@@ -473,10 +495,18 @@ void ALD37Character::SelectWeapon(int32 num)
 	CurrentWeapon = num;
 
 	GunMesh->SetStaticMesh(WeaponDescriptions[CurrentWeapon].GunModel);
+	VR_GunMesh->SetStaticMesh(WeaponDescriptions[CurrentWeapon].GunModel);
+
 	if (WeaponDescriptions[CurrentWeapon].GunInheritMaterial)
+	{
 		GunMesh->SetMaterial(0, WeaponMaterials[CurrentWeapon]);
+		VR_GunMesh->SetMaterial(0, WeaponMaterials[CurrentWeapon]);
+	}
 	else
+	{
 		GunMesh->SetMaterial(0, WeaponDescriptions[CurrentWeapon].GunModel->GetMaterial(0));
+		VR_GunMesh->SetMaterial(0, WeaponDescriptions[CurrentWeapon].GunModel->GetMaterial(0));
+	}
 }
 
 void ALD37Character::SetTeam(int32 team)

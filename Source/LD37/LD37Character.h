@@ -35,6 +35,9 @@ class ALD37Character : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USceneComponent* VR_Root;
+
 	/** Motion controller (right hand) */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UMotionControllerComponent* R_MotionController;
@@ -45,6 +48,11 @@ class ALD37Character : public ACharacter
 
 	UPROPERTY(VisibleAnywhere, Category = Mesh)
 	class UStaticMeshComponent* GunMesh;
+
+	UPROPERTY(VisibleAnywhere, Category = Mesh)
+	class UStaticMeshComponent* VR_GunMesh;
+
+	void SetUsingMotionControllers(bool isUsingMotionControllers);
 public:
 	ALD37Character();
 
