@@ -97,20 +97,23 @@ void ASoldierAIController::Tick(float deltaTime)
 				{
 					if (auto a2 = Cast<ALD37Character>(a.Actor.Get()))
 					{
-						float aggroDistSquared = 9999999999;
-						if (AggroedOn) aggroDistSquared = FVector::DistSquared(chr->GetActorLocation(), AggroedOn->GetActorLocation());
-
-						float distSquared = FVector::DistSquared(chr->GetActorLocation(), a2->GetActorLocation());
-
-						if (distSquared < aggroDistSquared)
+						if (a2->Health > 0)
 						{
-							FCollisionQueryParams params;
-							params.AddIgnoredActor(chr);
-							params.AddIgnoredActor(a2);
+							float aggroDistSquared = 9999999999;
+							if (AggroedOn) aggroDistSquared = FVector::DistSquared(chr->GetActorLocation(), AggroedOn->GetActorLocation());
 
-							if (a2->Team != chr->Team && !GetWorld()->LineTraceTestByChannel(chr->GetActorLocation() + FVector(0,0,150), a2->GetActorLocation() + FVector(0, 0, 150), ECollisionChannel::ECC_Visibility, params))
+							float distSquared = FVector::DistSquared(chr->GetActorLocation(), a2->GetActorLocation());
+
+							if (distSquared < aggroDistSquared)
 							{
-								Aggro(a2);
+								FCollisionQueryParams params;
+								params.AddIgnoredActor(chr);
+								params.AddIgnoredActor(a2);
+
+								if (a2->Team != chr->Team && !GetWorld()->LineTraceTestByChannel(chr->GetActorLocation() + FVector(0, 0, 150), a2->GetActorLocation() + FVector(0, 0, 150), ECollisionChannel::ECC_Visibility, params))
+								{
+									Aggro(a2);
+								}
 							}
 						}
 					}

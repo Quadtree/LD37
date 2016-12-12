@@ -28,9 +28,9 @@ void AToybox::BeginPlay()
 	
 	SpawnCharge = 1000;
 
-	int32 numActive = GEngine->GetAudioDeviceManager()->GetNumActiveAudioDevices();
+	//int32 numActive = GEngine->GetAudioDeviceManager()->GetNumActiveAudioDevices();
 
-	UE_LOG(LogTemp, Warning, TEXT("NumActive=%s"), *FString::FromInt(numActive));
+	//UE_LOG(LogTemp, Warning, TEXT("NumActive=%s"), *FString::FromInt(numActive));
 }
 
 // Called every frame
