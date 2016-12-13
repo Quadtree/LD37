@@ -36,6 +36,13 @@ void ALD37Character::SetUsingMotionControllers(bool isUsingMotionControllers)
 	}
 }
 
+void ALD37Character::PossessedBy(AController * NewController)
+{
+	Super::PossessedBy(NewController);
+
+	SetUsingMotionControllers(Cast<APlayerController>(NewController) != nullptr);
+}
+
 ALD37Character::ALD37Character()
 {
 	// Set size for collision capsule
@@ -103,9 +110,7 @@ ALD37Character::ALD37Character()
 	VR_Gun->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	VR_MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("VR_MuzzleLocation"));
-	VR_MuzzleLocation->SetupAttachment(VR_Gun);
-	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
-	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
+	VR_MuzzleLocation->SetupAttachment(VR_GunMesh);
 
 	// all soldiers start with the battle rifle
 	HasWeapon.Add(true);

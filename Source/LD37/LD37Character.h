@@ -53,6 +53,8 @@ class ALD37Character : public ACharacter
 	class UStaticMeshComponent* VR_GunMesh;
 
 	void SetUsingMotionControllers(bool isUsingMotionControllers);
+
+	virtual void PossessedBy(AController* NewController) override;
 public:
 	ALD37Character();
 
