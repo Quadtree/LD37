@@ -195,7 +195,10 @@ public:
 	void SelectWeapon1();
 	void SelectWeapon2();
 	void SelectWeapon3();
-	void SelectWeapon(int32 num);
+	bool SelectWeapon(int32 num);
+
+	void SelectNextWeapon();
+	void SelectPrevWeapon();
 
 	void SetTeam(int32 team);
 

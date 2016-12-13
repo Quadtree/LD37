@@ -184,6 +184,9 @@ void ALD37Character::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAction("SelectWeapon2", IE_Pressed, this, &ALD37Character::SelectWeapon2);
 	PlayerInputComponent->BindAction("SelectWeapon3", IE_Pressed, this, &ALD37Character::SelectWeapon3);
 
+	PlayerInputComponent->BindAction("SelectNextWeapon", IE_Pressed, this, &ALD37Character::SelectNextWeapon);
+	PlayerInputComponent->BindAction("SelectPrevWeapon", IE_Pressed, this, &ALD37Character::SelectPrevWeapon);
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &ALD37Character::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ALD37Character::MoveRight);
 
@@ -491,13 +494,13 @@ void ALD37Character::SelectWeapon3()
 	SelectWeapon(3);
 }
 
-void ALD37Character::SelectWeapon(int32 num)
+bool ALD37Character::SelectWeapon(int32 num)
 {
 	num = FMath::Clamp(num, 0, WeaponDescriptions.Num() - 1);
 
-	if (!HasWeapon[num]) return;
+	if (!HasWeapon[num]) return false;
 
-	if (num != 0 && AmmoCounts[WeaponDescriptions[num].AmmoType] <= 0) return;
+	if (num != 0 && AmmoCounts[WeaponDescriptions[num].AmmoType] <= 0) return false;
 
 	CurrentWeapon = num;
 
@@ -514,6 +517,29 @@ void ALD37Character::SelectWeapon(int32 num)
 		GunMesh->SetMaterial(0, WeaponDescriptions[CurrentWeapon].GunModel->GetMaterial(0));
 		VR_GunMesh->SetMaterial(0, WeaponDescriptions[CurrentWeapon].GunModel->GetMaterial(0));
 	}
+
+	return true;
+}
+
+void ALD37Character::SelectNextWeapon()
+{
+	int32 nw = CurrentWeapon;
+	for (int32 i = 0; i<1000; ++i)
+	{
+		if (SelectWeapon((++nw) % 4)) return;
+	}
+}
+
+void ALD37Character::SelectPrevWeapon()
+{
+	int32 nw = CurrentWeapon;
+	for (int32 i=0;i<1000;++i)
+	{
+		--nw;
+		if (nw < 0) nw = 3;
+		if (SelectWeapon(nw)) return;
+	}
+	
 }
 
 void ALD37Character::SetTeam(int32 team)
