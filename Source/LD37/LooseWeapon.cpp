@@ -16,6 +16,7 @@ ALooseWeapon::ALooseWeapon()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	Mesh->SetupAttachment(Root);
 	Mesh->SetNotifyRigidBodyCollision(true);
+	Mesh->SetCanEverAffectNavigation(false);
 
 	Mesh->OnComponentHit.AddDynamic(this, &ALooseWeapon::OnHit);
 
