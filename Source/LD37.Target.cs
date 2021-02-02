@@ -5,21 +5,10 @@ using System.Collections.Generic;
 
 public class LD37Target : TargetRules
 {
-	public LD37Target(TargetInfo Target)
+	public LD37Target(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-	}
 
-	//
-	// TargetRules interface.
-	//
-
-	public override void SetupBinaries(
-		TargetInfo Target,
-		ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
-		ref List<string> OutExtraModuleNames
-		)
-	{
-		OutExtraModuleNames.Add("LD37");
+		ExtraModuleNames.Add("LD37");
 	}
 }

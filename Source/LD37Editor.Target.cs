@@ -5,21 +5,10 @@ using System.Collections.Generic;
 
 public class LD37EditorTarget : TargetRules
 {
-	public LD37EditorTarget(TargetInfo Target)
+	public LD37EditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-	}
 
-	//
-	// TargetRules interface.
-	//
-
-	public override void SetupBinaries(
-		TargetInfo Target,
-		ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
-		ref List<string> OutExtraModuleNames
-		)
-	{
-		OutExtraModuleNames.Add("LD37");
+		ExtraModuleNames.Add("LD37");
 	}
 }
